@@ -17,6 +17,8 @@ func calcCutNum(str string, length int) (strLen, cutLen int) {
 
 	if strLen < length {
 		cutLen = strLen
+	} else {
+		cutLen = length
 	}
 
 	return strLen, cutLen

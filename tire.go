@@ -44,7 +44,7 @@ func (t *Tire) SetDepth(n int8) {
  */
 func (t *Tire) AddFull(keyword, content string) {
 	//  根据深度裁剪关键词长度
-	cutNum, strLen := calcCutNum(keyword, int(t.depth))
+	strLen, cutNum := calcCutNum(keyword, int(t.depth))
 
 	//  创建树
 	for i := 0; i < strLen; i++ {
@@ -115,18 +115,24 @@ func (t *Tire) Find(keyword string) (bool, []string) {
  *  @param content
  */
 func (t *Tire) insert(keyword, content string) {
-	node := t.Root                 // 获取根节点
-	for _, code := range keyword { // 以 Unicode 字符遍历该单词
-		value, ok := node.Children[code] // 获取 code 编码对应子节点
+	// 获取根节点
+	node := t.Root
+
+	// 以 Unicode 字符遍历该单词
+	for _, code := range keyword {
+
+		// 获取 code 编码对应子节点
+		_, ok := node.Children[code]
+
 		if !ok {
-			// 不存在则初始化该节点
-			value = newTrieNode(string(code))
-			// 然后将其添加到子节点字典
-			node.Children[code] = value
+			// 不存在则初始化该节点,然后将其添加到子节点字典
+			node.Children[code] = newTrieNode(string(code))
 		}
+
 		// 当前节点指针指向当前子节点
-		node = value
-		if ok := listSearchString(content, node.Content); ok > -1 {
+		node = node.Children[code]
+
+		if ok := listSearchString(content, node.Content); ok < 0 {
 			node.Content = append(node.Content, content)
 		}
 	}
