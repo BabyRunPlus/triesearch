@@ -32,6 +32,19 @@ func (t *Tire) SetDepth(n int8) {
 	t.depth = n
 }
 
+// AutoAddFull
+/**
+ *  @Author: rym 2023-01-31 17:24:56
+ *  @Description:自动添加全词搜索
+ *  @receiver t
+ *  @param list
+ */
+func (t *Tire) AutoAddFull(list []string) {
+	for i := 0; i < len(list); i++ {
+		t.AddFull(list[i], list[i])
+	}
+}
+
 // AddFull
 /**
  *  @Author: rym 2022-11-16 17:32:32
@@ -49,6 +62,19 @@ func (t *Tire) AddFull(keyword, content string) {
 	//  创建树
 	for i := 0; i < strLen; i++ {
 		t.insert(substr(keyword, i, cutNum), content)
+	}
+}
+
+// AutoAdd
+/**
+ *  @Author: rym 2023-01-31 17:26:29
+ *  @Description:自动添加非全词搜索
+ *  @receiver t
+ *  @param list
+ */
+func (t *Tire) AutoAdd(list []string) {
+	for i := 0; i < len(list); i++ {
+		t.Add(list[i], list[i])
 	}
 }
 
