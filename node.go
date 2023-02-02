@@ -6,20 +6,6 @@ package tiresearch
  *  @Description: 数据结构节点对象
  */
 type Node struct {
-	//  Char
-	/**
-	 *  @Author: rym 2022-11-16 09:01:47
-	 *  @Description: 该节点的字符
-	 */
-	Char string
-
-	//  Code
-	/**
-	 *  @Author: rym 2022-11-16 09:08:38
-	 *  @Description: 改节点的unicode
-	 */
-	Code rune
-
 	//  Children
 	/**
 	 *  @Author: rym 2022-11-16 09:09:00
@@ -27,12 +13,26 @@ type Node struct {
 	 */
 	Children map[rune]*Node `json:"children"`
 
+	//  Char
+	/**
+	 *  @Author: rym 2022-11-16 09:01:47
+	 *  @Description: 该节点的字符
+	 */
+	Char string
+
 	//  ContentList
 	/**
 	 *  @Author: rym 2022-11-16 09:10:54
 	 *  @Description:
 	 */
 	Content []string `json:"content"`
+
+	//  Code
+	/**
+	 *  @Author: rym 2022-11-16 09:08:38
+	 *  @Description: 改节点的unicode
+	 */
+	Code rune
 }
 
 // newTrieNode
