@@ -1,4 +1,4 @@
-# tiresearch
+# triesearch
 基于go+内存的轻量级搜索引擎
 
 使用方法：
