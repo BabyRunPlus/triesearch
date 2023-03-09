@@ -175,10 +175,6 @@ func (t *Trie) insert(keyword, content string) {
 		node = node.Children[code]
 		tmpNode = tmpNode.Children[code]
 
-		if ok := listSearchString(content, node.Content); ok < 0 {
-			node.Content = append(node.Content, content)
-		}
-
 		if tmpNode.ContentMap == nil {
 			tmpNode.ContentMap = make(map[string]string)
 		}
