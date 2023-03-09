@@ -7,7 +7,7 @@
 go get -u github.com/BabyRunPlus/triesearch
 
 第一步：初始化应用  
-s := tiresearch.NewTire()
+s := triesearch.NewTrie()
 
 第二步：设置索引深度 深度越小，搜索速度越快  
 s.SetDepth(5)
