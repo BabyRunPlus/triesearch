@@ -1,4 +1,4 @@
-package tiresearch
+package triesearch
 
 import (
 	"sort"

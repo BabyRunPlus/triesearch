@@ -1,17 +1,24 @@
-package tiresearch
+package triesearch
 
-// Tire
+// Trie
 /**
  *  @Author: rym 2022-11-16 09:18:42
- *  @Description:Tire Map 数据结构对象
+ *  @Description:Trie Map 数据结构对象
  */
-type Tire struct {
+type Trie struct {
 	//  Root
 	/**
 	 *  @Author: rym 2022-11-16 09:14:41
 	 *  @Description: 根节点
 	 */
 	Root *Node
+
+	//  tmpRoot
+	/**
+	 *  @Author: rym 2023-03-09 15:58:52
+	 *  @Description: 临时节点，创建数据结构时，用这个节点做一些临时操作
+	 */
+	tmpRoot *Node
 
 	//  depth
 	/**
@@ -28,7 +35,7 @@ type Tire struct {
  *  @receiver t
  *  @param n
  */
-func (t *Tire) SetDepth(n int8) {
+func (t *Trie) SetDepth(n int8) {
 	t.depth = n
 }
 
@@ -39,7 +46,7 @@ func (t *Tire) SetDepth(n int8) {
  *  @receiver t
  *  @param list
  */
-func (t *Tire) AutoAddFull(list []string) {
+func (t *Trie) AutoAddFull(list []string) {
 	for i := 0; i < len(list); i++ {
 		t.AddFull(list[i], list[i])
 	}
@@ -55,7 +62,7 @@ func (t *Tire) AutoAddFull(list []string) {
  *  @param keyword
  *  @param content
  */
-func (t *Tire) AddFull(keyword, content string) {
+func (t *Trie) AddFull(keyword, content string) {
 	//  根据深度裁剪关键词长度
 	strLen, cutNum := calcCutNum(keyword, int(t.depth))
 
@@ -72,7 +79,7 @@ func (t *Tire) AddFull(keyword, content string) {
  *  @receiver t
  *  @param list
  */
-func (t *Tire) AutoAdd(list []string) {
+func (t *Trie) AutoAdd(list []string) {
 	for i := 0; i < len(list); i++ {
 		t.Add(list[i], list[i])
 	}
@@ -87,7 +94,7 @@ func (t *Tire) AutoAdd(list []string) {
  *  @param keyword
  *  @param content
  */
-func (t *Tire) Add(keyword, content string) {
+func (t *Trie) Add(keyword, content string) {
 	//  根据深度裁剪关键词长度
 	cutNum, _ := calcCutNum(keyword, int(t.depth))
 
@@ -104,7 +111,7 @@ func (t *Tire) Add(keyword, content string) {
  *  @return bool
  *  @return []string
  */
-func (t *Tire) Find(keyword string) (bool, []string) {
+func (t *Trie) Find(keyword string) (bool, []string) {
 	cutNum, wordLen := calcCutNum(keyword, int(t.depth))
 	keyword = substr(keyword, 0, cutNum)
 
@@ -132,6 +139,16 @@ func (t *Tire) Find(keyword string) (bool, []string) {
 
 }
 
+// GC
+/**
+ *  @Author: rym 2023-03-09 16:11:00
+ *  @Description: 清除临时数据
+ *  @receiver t
+ */
+func (t *Trie) GC() {
+	t.tmpRoot = nil
+}
+
 // insert
 /**
  *  @Author: rym 2022-11-16 09:38:36
@@ -140,26 +157,36 @@ func (t *Tire) Find(keyword string) (bool, []string) {
  *  @param keyword
  *  @param content
  */
-func (t *Tire) insert(keyword, content string) {
+func (t *Trie) insert(keyword, content string) {
 	// 获取根节点
 	node := t.Root
+	tmpNode := t.tmpRoot
 
 	// 以 Unicode 字符遍历该单词
 	for _, code := range keyword {
-
 		// 获取 code 编码对应子节点
-		_, ok := node.Children[code]
-
-		if !ok {
+		if _, ok := node.Children[code]; !ok {
 			// 不存在则初始化该节点,然后将其添加到子节点字典
 			node.Children[code] = newTrieNode(string(code))
+			tmpNode.Children[code] = newTrieNode(string(code))
 		}
 
 		// 当前节点指针指向当前子节点
 		node = node.Children[code]
+		tmpNode = tmpNode.Children[code]
 
 		if ok := listSearchString(content, node.Content); ok < 0 {
 			node.Content = append(node.Content, content)
+		}
+
+		if tmpNode.ContentMap == nil {
+			tmpNode.ContentMap = make(map[string]string)
+		}
+
+		//去重判断
+		if _, exits := tmpNode.ContentMap[content]; !exits {
+			node.Content = append(node.Content, content)
+			tmpNode.ContentMap[content] = ""
 		}
 	}
 }

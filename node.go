@@ -1,4 +1,4 @@
-package tiresearch
+package triesearch
 
 // Node
 /**
@@ -12,6 +12,13 @@ type Node struct {
 	 *  @Description: 该节点的子节点字典
 	 */
 	Children map[rune]*Node `json:"children"`
+
+	//  ContentMap
+	/**
+	 *  @Author: rym 2023-03-09 16:00:51
+	 *  @Description: 临时用的map，用来作数据去重
+	 */
+	ContentMap map[string]string
 
 	//  Char
 	/**

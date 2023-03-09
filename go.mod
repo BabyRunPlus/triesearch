@@ -1,3 +1,3 @@
-module github.com/BabyRunPlus/tiresearch
+module github.com/BabyRunPlus/triesearch
 
 go 1.19

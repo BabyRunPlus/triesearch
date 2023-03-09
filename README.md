@@ -4,7 +4,7 @@
 使用方法：
 
 下载安装  
-go get -u github.com/BabyRunPlus/tiresearch
+go get -u github.com/BabyRunPlus/triesearch
 
 第一步：初始化应用  
 s := tiresearch.NewTire()
@@ -34,6 +34,8 @@ s.SetDepth(5)
 &emsp;&emsp;for i := 0; i < len(list); i++ {  
 &emsp;&emsp;&emsp;&emsp;s.Add("自定义关键词", list[i])  
 &emsp;&emsp;}  
+
+&emsp;&emsp;#数据结构创建结束后建议执行s.GC()用来清除临时数据
 
 搜索：  
 r, c := s.Find("碳中和")  

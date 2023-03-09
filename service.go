@@ -1,7 +1,8 @@
-package tiresearch
+package triesearch
 
-func NewTire() *Tire {
-	return &Tire{
+func NewTrie() *Trie {
+	return &Trie{
+		newTrieNode("/"),
 		newTrieNode("/"),
 		10,
 	}
